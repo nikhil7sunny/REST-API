@@ -7,25 +7,35 @@ connection.getConnection(function(err) {
   console.log("Connected!!");
 });
 
-var create_book_author = "create table if not exists book_author(id int primary key auto_increment,book varchar(30) not null ,author varchar(30) not null)"
+var create_author = "create table if not exists Author(author_id int primary key auto_increment,author varchar(30))"
 
-var create_book_review = "create table if not exists book_review(review_id int primary key auto_increment,book_id int not null, review  varchar(200),foreign key (book_id) references book_author(id) on delete cascade)"
+var create_books = "create table if not exists Books(book_id int primary key auto_increment,author_id int not null,book varchar(30),foreign key (author_id) references Author(author_id) on delete cascade)"
 
-//creating table book_author
-connection.query(create_book_author,function(err,results,fields){
+var create_review = "create table if not exists Review (review_id int primary key auto_increment, book_id int not null,review varchar(300),foreign key (book_id) references Books (book_id) on delete cascade)"
+
+//creating table Author
+connection.query(create_author,function(err,results,fields){
 	if (err)
 		console.log('error'+err)
 	else{
-	console.log('created table book_author')
+	console.log('created table Author')
 	// console.log('results'+results)
 	// console.log('fields'+fields)
 		}
 })
 
-//creating table book_review
-connection.query(create_book_review,function(err,results,fields){
+//creating table Books
+connection.query(create_books,function(err,results,fields){
 	if (err)
 		console.log('error ' + err)
 	else
-		console.log('created table book_review')
+		console.log('created table Books')
+})
+
+//creating table Review
+connection.query(create_review,function(err,results,fields){
+	if (err)
+		console.log('error ' + err)
+	else
+		console.log('created table Review')
 })
